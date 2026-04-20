@@ -28,7 +28,7 @@ async def app(
 from fastapi import Request
 from . import api_router
 from app.dependencies import SessionDep
-from app.repositories.todo import TodoRepository
+from app.repositories.todos import TodoRepository
 from app.schemas.todo import TodoResponse
 from app.auth import AuthDep
 
