@@ -1,0 +1,82 @@
+{% extends "authenticated-base.html" %} {% block additional_styles %}
+<style>
+  .todo-card {
+    border: none;
+    border-radius: 1rem;
+  }
+
+  .todo-item {
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background-color: #fff;
+  }
+
+  .todo-status-done {
+    color: green;
+    font-weight: 600;
+  }
+
+  .todo-status-pending {
+    color: #dc3545;
+    font-weight: 600;
+  }
+</style>
+{% endblock %} {% block subpage_content %}
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm todo-card">
+        <div class="card-body">
+          <h2 class="fw-bold mb-3">My Todos</h2>
+
+          <form class="row g-3">
+            <div class="col-md-9">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter a todo item"
+              />
+            </div>
+            <div class="col-md-3 d-grid">
+              <button type="submit" class="btn btn-primary">Add Todo</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm todo-card">
+        <div class="card-body">
+          <h4 class="mb-3">Todo List</h4>
+
+          {% if todos %} {% for todo in todos %}
+          <div
+            class="todo-item d-flex justify-content-between align-items-center"
+          >
+            <div>
+              <div class="fw-semibold">{{ todo.text }}</div>
+              <div
+                class="{% if todo.done %}todo-status-done{% else %}todo-status-pending{% endif %}"
+              >
+                {% if todo.done %}Done{% else %}Pending{% endif %}
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-success">Mark Done</button>
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <p class="text-muted mb-0">No todos yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
