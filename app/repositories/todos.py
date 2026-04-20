@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlmodel import select
-from app.models.todo import Todo
+from app.models.todos import Todo
 
 
 class TodoRepository:
