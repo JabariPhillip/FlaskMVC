@@ -1,12 +1,25 @@
-from fastapi import Request
-from . import api_router
+from fastapi import APIRouter, Request
 from app.dependencies import SessionDep
-from app.repositories.todo import TodoRepository
-from app.schemas.todo import TodoResponse
+from sqlmodel import select
+from app.models.todos import Todo
 from app.auth import AuthDep
+from fastapi.responses import HTMLResponse
+from . import templates
+
+todo_router = APIRouter()
 
 
-@api_router.get("/todos", response_model=list[TodoResponse])
-async def list_todos(request: Request, db: SessionDep, user: AuthDep):
-    todo_repo = TodoRepository(db)
-    return todo_repo.get_user_todos(user.id)
+@todo_router.get("/todos", response_class=HTMLResponse)
+async def todos_page(request: Request, user: AuthDep, db: SessionDep):
+    todos = db.exec(
+        select(Todo).where(Todo.user_id == user.id)
+    ).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="todos.html",
+        context={
+            "user": user,
+            "todos": todos
+        }
+    )
